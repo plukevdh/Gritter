@@ -20,10 +20,11 @@
 	* Set up global options that the user can over-ride
 	*/
 	$.gritter.options = {
-        position: '',
+    position: '',
 		fade_in_speed: 'medium', // how fast notifications fade in
 		fade_out_speed: 1000, // how fast the notices fade out
-		time: 6000 // hang on the screen for...
+		time: 6000, // hang on the screen for...
+    close_on_click: false // dismiss notification on element-click
 	}
 	
 	/**
@@ -72,6 +73,7 @@
 		fade_in_speed: '',
 		fade_out_speed: '',
 		time: '',
+    close_on_click: '',
 	    
 		// Private - no touchy the private parts
 		_custom_timer: 0,
@@ -105,8 +107,10 @@
 				sticky = params.sticky || false,
 				item_class = params.class_name || '',
                 position = $.gritter.options.position,
-				time_alive = params.time || '';
-			
+				time_alive = params.time || '',
+        widget_click_close = params.close_on_click || false,
+        on_click = params.on_click || function(){};
+        
 			this._verifyWrapper();
 			
 			this._item_count++;
@@ -147,6 +151,8 @@
 			if(!sticky){
 				this._setFadeTimer(item, number);
 			}
+
+      $(item).bind('click', on_click);
 			
 			// Bind the hover/unhover states
 			$(item).bind('mouseenter mouseleave', function(event){
@@ -162,6 +168,12 @@
 				}
 				Gritter._hoverState($(this), event.type);
 			});
+
+      if(widget_click_close) {
+        $(item).bind('click', function(event) {
+          Gritter.removeSpecific(number, {}, $(item), true);
+        });
+      }
 			
 			return number;
 	    
