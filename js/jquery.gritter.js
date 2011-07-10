@@ -67,14 +67,14 @@
 	* @constructor (not really since it's object literal)
 	*/
 	var Gritter = {
-	    
+
 		// Public - options to over-ride with $.gritter.options in "add"
-        position: '',
+		position: '',
 		fade_in_speed: '',
 		fade_out_speed: '',
 		time: '',
-    close_on_click: '',
-	    
+		close_on_click: '',
+
 		// Private - no touchy the private parts
 		_custom_timer: 0,
 		_item_count: 0,
@@ -106,10 +106,10 @@
 				image = params.image || '',
 				sticky = params.sticky || false,
 				item_class = params.class_name || '',
-                position = $.gritter.options.position,
+				position = $.gritter.options.position,
 				time_alive = params.time || '',
-        widget_click_close = params.close_on_click || false,
-        on_click = params.on_click || function(){};
+				widget_click_close = params.close_on_click || false,
+				on_click = params.on_click || function(){};
         
 			this._verifyWrapper();
 			
@@ -152,8 +152,8 @@
 				this._setFadeTimer(item, number);
 			}
 
-      $(item).bind('click', on_click);
-			
+			$(item).bind('click', on_click);
+
 			// Bind the hover/unhover states
 			$(item).bind('mouseenter mouseleave', function(event){
 				if(event.type == 'mouseenter'){
@@ -261,8 +261,8 @@
 					e.find('span').before(this._tpl_close);
 				
 				// Clicking (X) makes the perdy thing close
-				e.find('.gritter-close').click(function(){
-				
+				e.find('.gritter-close').click(function(event){
+					event.stopPropagation();
 					var unique_id = e.attr('id').split('-')[2];
 					Gritter.removeSpecific(unique_id, {}, e, true);
 					
